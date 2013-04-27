@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "psxss", "psxss\psxss.vcxproj", "{1BFBE118-55F5-46F4-9134-00E780F5A5EA}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xntdll", "xntdll\xntdll.vcxproj", "{32F61BA9-1BAD-42CA-A7D8-75D37C73CC5C}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -17,12 +15,6 @@ Global
 		{1BFBE118-55F5-46F4-9134-00E780F5A5EA}.Release|Win32.ActiveCfg = Release|Win32
 		{1BFBE118-55F5-46F4-9134-00E780F5A5EA}.Release|Win32.Build.0 = Release|Win32
 		{1BFBE118-55F5-46F4-9134-00E780F5A5EA}.Release|Win32.Deploy.0 = Release|Win32
-		{32F61BA9-1BAD-42CA-A7D8-75D37C73CC5C}.Debug|Win32.ActiveCfg = Debug|Win32
-		{32F61BA9-1BAD-42CA-A7D8-75D37C73CC5C}.Debug|Win32.Build.0 = Debug|Win32
-		{32F61BA9-1BAD-42CA-A7D8-75D37C73CC5C}.Debug|Win32.Deploy.0 = Debug|Win32
-		{32F61BA9-1BAD-42CA-A7D8-75D37C73CC5C}.Release|Win32.ActiveCfg = Release|Win32
-		{32F61BA9-1BAD-42CA-A7D8-75D37C73CC5C}.Release|Win32.Build.0 = Release|Win32
-		{32F61BA9-1BAD-42CA-A7D8-75D37C73CC5C}.Release|Win32.Deploy.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
