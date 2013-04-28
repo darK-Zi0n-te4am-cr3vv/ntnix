@@ -23,6 +23,9 @@
       <Project>{57491c35-776d-4940-bf61-54fe01b715c3}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{1BFBE118-55F5-46F4-9134-00E780F5A5EA}</ProjectGuid>
     <RootNamespace>psxss</RootNamespace>
