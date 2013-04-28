@@ -28,7 +28,7 @@ public:
         return &m_Handle;
     }
 
-    operator HANDLE()
+    operator HANDLE() const
     {
         return m_Handle;
     }
