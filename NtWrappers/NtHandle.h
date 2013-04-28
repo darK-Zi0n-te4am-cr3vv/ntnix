@@ -34,5 +34,7 @@ public:
     }
 
 private:
+    NtHandle(const NtHandle &); // Disabling the copy ctor
+
     HANDLE m_Handle;
 };
