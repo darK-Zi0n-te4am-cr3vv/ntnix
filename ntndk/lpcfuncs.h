@@ -19,6 +19,10 @@ Author:
 #ifndef _LPCFUNCS_H
 #define _LPCFUNCS_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 //
 // Dependencies
 //
@@ -403,5 +407,9 @@ ZwWriteRequestData(
     _In_ ULONG BufferLength,
     _Out_ PULONG ReturnLength
 );
+
+#ifdef __cplusplus
+};
+#endif
 
 #endif
