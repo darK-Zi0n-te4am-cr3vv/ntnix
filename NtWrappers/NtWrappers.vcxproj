@@ -30,7 +30,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -129,6 +129,9 @@
     <ClInclude Include="NtHandle.h" />
     <ClInclude Include="NtLpc.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="NtObjectAttributes.h" />
+    <ClInclude Include="NtSecurityDescriptor.h" />
+    <ClInclude Include="NtUnicodeString.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NtLpc.cpp" />
