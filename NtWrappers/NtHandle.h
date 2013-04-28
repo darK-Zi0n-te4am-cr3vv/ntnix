@@ -36,15 +36,21 @@ public:
     const NtHandle & operator=(const NtHandle & Handle)
     {
         if (m_Handle)
+        {
             NtClose(m_Handle);
 
-        NTSTATUS Status = NtDuplicateObject(NtCurrentProcess(), Handle.m_Handle,
-                                            NtCurrentProcess(), &m_Handle,
-                                            0, 0,
-                                            DUPLICATE_SAME_ACCESS | DUPLICATE_SAME_ATTRIBUTES);
+            NTSTATUS Status = NtDuplicateObject(NtCurrentProcess(), Handle.m_Handle,
+                                                NtCurrentProcess(), &m_Handle,
+                                                0, 0,
+                                                DUPLICATE_SAME_ACCESS | DUPLICATE_SAME_ATTRIBUTES);
 
-        if (!NT_SUCCESS(Status))
+            if (!NT_SUCCESS(Status))
+                m_Handle = NULL;
+        }
+        else
+        {
             m_Handle = NULL;
+        }
 
         return *this;
     }
