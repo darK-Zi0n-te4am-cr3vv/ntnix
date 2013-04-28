@@ -1,3 +1,5 @@
+#pragma once
+
 #include <obfuncs.h>
 
 class NtHandle
