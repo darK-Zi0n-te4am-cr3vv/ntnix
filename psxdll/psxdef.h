@@ -5,6 +5,8 @@
 extern "C" {
 #endif
 
+#define DECLARE_STRUCT(Name) struct _##Name; typedef struct _##Name Name, P##Name; struct _##Name
+
 #ifdef __cplusplus
 };
 #endif
