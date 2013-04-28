@@ -32,6 +32,14 @@ Author:
 #endif
 
 //
+// Use dummy macros, if SAL 2 is not available
+//
+#include <sal.h>
+#if (_SAL_VERSION < 20)
+#include <no_sal2.h>
+#endif
+
+//
 // Headers needed for NDK
 //
 #include <stdio.h>          // C Standard Header
@@ -59,6 +67,7 @@ Author:
 #include <pstypes.h>        // Process Manager Types
 #include <rtltypes.h>       // Runtime Library Types
 #include <setypes.h>        // Security Subsystem Types
+#include <vftypes.h>        // Verifier Types
 
 //
 // Function Headers
@@ -80,6 +89,7 @@ Author:
 #include <rtlfuncs.h>       // Runtime Library Functions
 #include <sefuncs.h>        // Security Subsystem Functions
 #include <umfuncs.h>        // User-Mode NT Library Functions
+#include <vffuncs.h>        // Verifier Functions
 
 //
 // Assembly Support

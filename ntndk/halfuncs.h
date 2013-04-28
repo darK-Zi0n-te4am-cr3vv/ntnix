@@ -68,7 +68,7 @@ NTHALAPI
 VOID
 NTAPI
 HalDisplayString(
-    IN PCHAR String
+    _In_ PCHAR String
 );
 
 //
@@ -86,24 +86,24 @@ NTHALAPI
 VOID
 NTAPI
 HalInitializeProcessor(
-    ULONG ProcessorNumber,
-    struct _LOADER_PARAMETER_BLOCK *LoaderBlock
+    _In_ ULONG ProcessorNumber,
+    _In_ struct _LOADER_PARAMETER_BLOCK *LoaderBlock
 );
 
 NTHALAPI
 BOOLEAN
 NTAPI
 HalInitSystem(
-    ULONG BootPhase,
-    struct _LOADER_PARAMETER_BLOCK *LoaderBlock
+    _In_ ULONG BootPhase,
+    _In_ struct _LOADER_PARAMETER_BLOCK *LoaderBlock
 );
 
 NTHALAPI
 BOOLEAN
 NTAPI
 HalStartNextProcessor(
-    IN struct _LOADER_PARAMETER_BLOCK *LoaderBlock,
-    IN PKPROCESSOR_STATE ProcessorState
+    _In_ struct _LOADER_PARAMETER_BLOCK *LoaderBlock,
+    _In_ PKPROCESSOR_STATE ProcessorState
 );
 
 #endif
@@ -112,7 +112,7 @@ NTHALAPI
 VOID
 NTAPI
 HalReturnToFirmware(
-    FIRMWARE_REENTRY Action
+    _In_ FIRMWARE_REENTRY Action
 );
 
 //
@@ -132,26 +132,32 @@ NTHALAPI
 BOOLEAN
 NTAPI
 HalBeginSystemInterrupt(
-    KIRQL Irql,
-    ULONG Vector,
-    PKIRQL OldIrql
+    _In_ KIRQL Irql,
+    _In_ ULONG Vector,
+    _Out_ PKIRQL OldIrql
+);
+
+VOID
+FASTCALL
+HalClearSoftwareInterrupt(
+    _In_ KIRQL Request
 );
 
 NTHALAPI
-BOOLEAN
+VOID
 NTAPI
 HalDisableSystemInterrupt(
-    ULONG Vector,
-    KIRQL Irql
+    _In_ ULONG Vector,
+    _In_ KIRQL Irql
 );
 
 NTHALAPI
 BOOLEAN
 NTAPI
 HalEnableSystemInterrupt(
-    ULONG Vector,
-    KIRQL Irql,
-    KINTERRUPT_MODE InterruptMode
+    _In_ ULONG Vector,
+    _In_ KIRQL Irql,
+    _In_ KINTERRUPT_MODE InterruptMode
 );
 
 NTHALAPI
@@ -159,8 +165,15 @@ VOID
 NTAPI
 HalEndSystemInterrupt(
     KIRQL Irql,
-    ULONG Vector
+    _In_ PKTRAP_FRAME TrapFrame
 );
+
+#ifdef _ARM_ // FIXME: ndk/arm? armddk.h?
+ULONG
+HalGetInterruptSource(
+    VOID
+);
+#endif
 
 NTHALAPI
 VOID
@@ -173,14 +186,14 @@ NTHALAPI
 VOID
 FASTCALL
 HalRequestSoftwareInterrupt(
-    KIRQL SoftwareInterruptRequested
+    _In_ KIRQL SoftwareInterruptRequested
 );
 
 NTHALAPI
 VOID
 NTAPI
 HalRequestIpi(
-    KAFFINITY TargetSet
+    _In_ KAFFINITY TargetSet
 );
 
 NTHALAPI
@@ -188,6 +201,25 @@ VOID
 NTAPI
 HalHandleNMI(
     PVOID NmiInfo
+);
+
+NTHALAPI
+UCHAR
+FASTCALL
+HalSystemVectorDispatchEntry(
+    _In_ ULONG Vector,
+    _Out_ PKINTERRUPT_ROUTINE **FlatDispatch,
+    _Out_ PKINTERRUPT_ROUTINE *NoConnection
+);
+
+//
+// Bus Functions
+//
+NTHALAPI
+NTSTATUS
+NTAPI
+HalAdjustResourceList(
+    _Inout_ PIO_RESOURCE_REQUIREMENTS_LIST *pResourceList
 );
 
 //
@@ -198,19 +230,42 @@ NTHALAPI
 ARC_STATUS
 NTAPI
 HalSetEnvironmentVariable(
-    IN PCH Name,
-    IN PCH Value
+    _In_ PCH Name,
+    _In_ PCH Value
 );
 
 NTHALAPI
 ARC_STATUS
 NTAPI
 HalGetEnvironmentVariable(
-    IN PCH Variable,
-    IN USHORT Length,
-    OUT PCH Buffer
+    _In_ PCH Variable,
+    _In_ USHORT Length,
+    _Out_ PCH Buffer
 );
 #endif
+
+//
+// Profiling Functions
+//
+VOID
+NTAPI
+HalStartProfileInterrupt(
+    _In_ KPROFILE_SOURCE ProfileSource
+);
+
+NTHALAPI
+VOID
+NTAPI
+HalStopProfileInterrupt(
+    _In_ KPROFILE_SOURCE ProfileSource
+);
+
+NTHALAPI
+ULONG_PTR
+NTAPI
+HalSetProfileInterval(
+    _In_ ULONG_PTR Interval
+);
 
 //
 // Time Functions
@@ -219,14 +274,21 @@ NTHALAPI
 BOOLEAN
 NTAPI
 HalQueryRealTimeClock(
-    IN PTIME_FIELDS RtcTime
+    _In_ PTIME_FIELDS RtcTime
 );
 
 NTHALAPI
 BOOLEAN
 NTAPI
 HalSetRealTimeClock(
-    IN PTIME_FIELDS RtcTime
+    _In_ PTIME_FIELDS RtcTime
+);
+
+NTHALAPI
+ULONG
+NTAPI
+HalSetTimeIncrement(
+    _In_ ULONG Increment
 );
 
 #endif

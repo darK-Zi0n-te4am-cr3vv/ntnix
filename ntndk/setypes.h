@@ -58,7 +58,29 @@ Author:
 #define SE_SYSTEM_ENVIRONMENT_PRIVILEGE   (22L)
 #define SE_CHANGE_NOTIFY_PRIVILEGE        (23L)
 #define SE_REMOTE_SHUTDOWN_PRIVILEGE      (24L)
-#define SE_MAX_WELL_KNOWN_PRIVILEGE       (SE_REMOTE_SHUTDOWN_PRIVILEGE)
+#define SE_UNDOCK_PRIVILEGE               (25L)
+#define SE_SYNC_AGENT_PRIVILEGE           (26L)
+#define SE_ENABLE_DELEGATION_PRIVILEGE    (27L)
+#define SE_MANAGE_VOLUME_PRIVILEGE        (28L)
+#define SE_IMPERSONATE_PRIVILEGE          (29L)
+#define SE_CREATE_GLOBAL_PRIVILEGE        (30L)
+#define SE_MAX_WELL_KNOWN_PRIVILEGE       (SE_CREATE_GLOBAL_PRIVILEGE)
+
+typedef struct _TOKEN_MANDATORY_POLICY {
+  ULONG Policy;
+} TOKEN_MANDATORY_POLICY, *PTOKEN_MANDATORY_POLICY;
+
+typedef struct _TOKEN_ACCESS_INFORMATION
+{
+    struct _SID_AND_ATTRIBUTES_HASH *SidHash;
+    struct _SID_AND_ATTRIBUTES_HASH *RestrictedSidHash;
+    struct _TOKEN_PRIVILEGES *Privileges;
+    LUID AuthenticationId;
+    TOKEN_TYPE TokenType;
+    SECURITY_IMPERSONATION_LEVEL ImpersonationLevel;
+    TOKEN_MANDATORY_POLICY MandatoryPolicy;
+    ULONG Flags;
+} TOKEN_ACCESS_INFORMATION, *PTOKEN_ACCESS_INFORMATION;
 
 #else
 
@@ -160,18 +182,18 @@ typedef struct _TOKEN
     ULONG VariablePart;                               /* 0xA0 */
 } TOKEN, *PTOKEN;
 
-typedef struct _AUX_DATA
+typedef struct _AUX_ACCESS_DATA
 {
     PPRIVILEGE_SET PrivilegeSet;
     GENERIC_MAPPING GenericMapping;
     ULONG Reserved;
-} AUX_DATA, *PAUX_DATA;
+} AUX_ACCESS_DATA, *PAUX_ACCESS_DATA;
 
 //
 // External SRM Data
 //
-extern PACL SePublicDefaultDacl;
-extern PACL SeSystemDefaultDacl;
+extern PACL NTSYSAPI SePublicDefaultDacl;
+extern PACL NTSYSAPI SeSystemDefaultDacl;
 
 #endif
 #endif

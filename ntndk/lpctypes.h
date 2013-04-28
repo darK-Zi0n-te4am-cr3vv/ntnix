@@ -25,6 +25,15 @@ Author:
 #include <umtypes.h>
 //#include <pstypes.h>
 
+#ifndef NTOS_MODE_USER
+
+//
+// Kernel Exported Object Types
+//
+extern POBJECT_TYPE NTSYSAPI LpcPortObjectType;
+
+#endif // !NTOS_MODE_USER
+
 //
 // Internal helper macro
 //
@@ -32,15 +41,12 @@ Author:
     (((ULONG)(x)+(s)-1) & ~((ULONG)(s)-1))
 
 //
-// Maximum message size that can be sent through an LPC Port without a section
-//
-#define PORT_MAXIMUM_MESSAGE_LENGTH     256
-
-//
 // Port Object Access Masks
 //
 #define PORT_CONNECT                    0x1
-#define PORT_ALL_ACCESS                 0x1
+#define PORT_ALL_ACCESS                 (STANDARD_RIGHTS_REQUIRED | \
+                                         SYNCHRONIZE | \
+                                         PORT_CONNECT)
 
 //
 // Port Object Flags
@@ -84,6 +90,15 @@ typedef enum _PORT_INFORMATION_CLASS
 } PORT_INFORMATION_CLASS;
 
 #ifdef NTOS_MODE_USER
+
+//
+// Maximum message size that can be sent through an LPC Port without a section
+//
+#ifdef _WIN64
+#define PORT_MAXIMUM_MESSAGE_LENGTH 512
+#else
+#define PORT_MAXIMUM_MESSAGE_LENGTH 256
+#endif
 
 //
 // Portable LPC Types for 32/64-bit compatibility
@@ -205,8 +220,11 @@ typedef struct _LPCP_PORT_OBJECT
     SECURITY_CLIENT_CONTEXT StaticSecurity;
     LIST_ENTRY LpcReplyChainHead;
     LIST_ENTRY LpcDataInfoChainHead;
-    PEPROCESS ServerProcess;
-    PEPROCESS MappingProcess;
+    union
+    {
+        PEPROCESS ServerProcess;
+        PEPROCESS MappingProcess;
+    };
     ULONG MaxMessageLength;
     ULONG MaxConnectionInfoLength;
     ULONG Flags;

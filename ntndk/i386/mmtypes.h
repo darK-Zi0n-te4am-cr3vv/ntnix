@@ -32,6 +32,11 @@ Author:
 #define MM_ALLOCATION_GRANULARITY_SHIFT   16L
 
 //
+// Address of the shared user page
+//
+#define MM_SHARED_USER_DATA_VA 0x7FFE0000
+
+//
 // Sanity checks for Paging Macros
 //
 #ifdef C_ASSERT
@@ -115,9 +120,9 @@ typedef struct _MMPTE_LIST
     ULONG Valid:1;
     ULONG OneEntry:1;
     ULONG filler0:8;
-    ULONG NextEntry:20;
     ULONG Prototype:1;
     ULONG filler1:1;
+    ULONG NextEntry:20;
 } MMPTE_LIST;
 
 #ifndef CONFIG_SMP

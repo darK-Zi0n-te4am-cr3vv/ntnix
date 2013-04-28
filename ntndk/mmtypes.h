@@ -42,12 +42,6 @@ Author:
     & ~(MM_ALLOCATION_GRANULARITY - 1))
 
 //
-// Macro for generating pool tags
-//
-#define TAG(A, B, C, D)                                     \
-    (ULONG)(((A)<<0) + ((B)<<8) + ((C)<<16) + ((D)<<24))
-
-//
 // PFN Identity Uses
 //
 #define MMPFNUSE_PROCESSPRIVATE                             0
@@ -63,8 +57,24 @@ Author:
 #define MMPFNUSE_DRIVERLOCKPAGE                             10
 #define MMPFNUSE_KERNELSTACK                                11
 
-#ifndef NTOS_MODE_USER
+//
+// Lock/Unlock Virtuam Memory Flags
+//
+#define MAP_PROCESS                                         1
+#define MAP_SYSTEM                                          2
 
+//
+// Flags for ProcessExecutionOptions
+//
+#define MEM_EXECUTE_OPTION_DISABLE                          0x1
+#define MEM_EXECUTE_OPTION_ENABLE                           0x2
+#define MEM_EXECUTE_OPTION_DISABLE_THUNK_EMULATION          0x4
+#define MEM_EXECUTE_OPTION_PERMANENT                        0x8
+#define MEM_EXECUTE_OPTION_EXECUTE_DISPATCH_ENABLE          0x10
+#define MEM_EXECUTE_OPTION_IMAGE_DISPATCH_ENABLE            0x20
+#define MEM_EXECUTE_OPTION_VALID_FLAGS                      0x3F
+
+#ifndef NTOS_MODE_USER
 //
 // Virtual Memory Flags
 //
@@ -170,6 +180,21 @@ typedef enum _SECTION_INFORMATION_CLASS
     SectionBasicInformation,
     SectionImageInformation,
 } SECTION_INFORMATION_CLASS;
+
+//
+// Kinds of VADs
+//
+typedef enum _MI_VAD_TYPE
+{
+    VadNone,
+    VadDevicePhysicalMemory,
+    VadImageMap,
+    VadAwe,
+    VadWriteWatch,
+    VadLargePages,
+    VadRotatePhysical,
+    VadLargePageSection
+} MI_VAD_TYPE, *PMI_VAD_TYPE;
 
 #ifdef NTOS_MODE_USER
 
@@ -302,8 +327,8 @@ typedef struct _SECTION_IMAGE_INFORMATION
 {
     PVOID TransferAddress;
     ULONG ZeroBits;
-    ULONG MaximumStackSize;
-    ULONG CommittedStackSize;
+    SIZE_T MaximumStackSize;
+    SIZE_T CommittedStackSize;
     ULONG SubSystemType;
     union
     {
@@ -316,24 +341,13 @@ typedef struct _SECTION_IMAGE_INFORMATION
     };
     ULONG GpValue;
     USHORT ImageCharacteristics;
-    USHORT DllChracteristics;
+    USHORT DllCharacteristics;
     USHORT Machine;
     UCHAR ImageContainsCode;
-    union
-    {
-        struct
-        {
-            UCHAR ComPlusNativeReady:1;
-            UCHAR ComPlusILOnly:1;
-            UCHAR ImageDynamicallyRelocated:1;
-            UCHAR ImageMappedFlat:1;
-            UCHAR Reserved:4;
-        };
-        UCHAR ImageFlags;
-    };
+    UCHAR Spare1;
     ULONG LoaderFlags;
     ULONG ImageFileSize;
-    ULONG CheckSum;
+    ULONG Reserved[1];
 } SECTION_IMAGE_INFORMATION, *PSECTION_IMAGE_INFORMATION;
 
 #ifndef NTOS_MODE_USER
@@ -345,7 +359,7 @@ typedef struct _MMPTE
 {
     union
     {
-        ULONG Long;
+        ULONG_PTR Long;
         HARDWARE_PTE Flush;
         MMPTE_HARDWARE Hard;
         MMPTE_PROTOTYPE Proto;
@@ -387,7 +401,7 @@ typedef struct _SEGMENT
     ULONG NumberOfCommittedPages;
     PMMEXTEND_INFO ExtendInfo;
     SEGMENT_FLAGS SegmentFlags;
-    PVOID BaseAddress;
+    PVOID BasedAddress;
     union
     {
         SIZE_T ImageCommitment;
@@ -402,14 +416,29 @@ typedef struct _SEGMENT
     MMPTE ThePtes[1];
 } SEGMENT, *PSEGMENT;
 
+typedef struct _MAPPED_FILE_SEGMENT
+{
+    struct _CONTROL_AREA *ControlArea;
+    ULONG TotalNumberOfPtes;
+    ULONG NonExtendedPtes;
+    ULONG Spare0;
+    UINT64 SizeOfSegment;
+    MMPTE SegmentPteTemplate;
+    SIZE_T NumberOfCommittedPages;
+    PMMEXTEND_INFO ExtendInfo;
+    SEGMENT_FLAGS SegmentFlags;
+    PVOID BasedAddress;
+    struct _MSUBSECTION *LastSubsectionHint;
+} MAPPED_FILE_SEGMENT, *PMAPPED_FILE_SEGMENT;
+
 //
 // Event Counter Structure
 //
 typedef struct _EVENT_COUNTER
 {
+    SLIST_ENTRY ListEntry;
     ULONG RefCount;
     KEVENT Event;
-    LIST_ENTRY ListEntry;
 } EVENT_COUNTER, *PEVENT_COUNTER;
 
 //
@@ -610,13 +639,13 @@ typedef struct _MMADDRESS_NODE
 {
     union
     {
-        ULONG Balance:2;
+        LONG_PTR Balance:2;
         struct _MMADDRESS_NODE *Parent;
     } u1;
     struct _MMADDRESS_NODE *LeftChild;
     struct _MMADDRESS_NODE *RightChild;
-    ULONG StartingVpn;
-    ULONG EndingVpn;
+    ULONG_PTR StartingVpn;
+    ULONG_PTR EndingVpn;
 } MMADDRESS_NODE, *PMMADDRESS_NODE;
 
 //
@@ -625,12 +654,148 @@ typedef struct _MMADDRESS_NODE
 typedef struct _MM_AVL_TABLE
 {
     MMADDRESS_NODE BalancedRoot;
-    ULONG DepthOfTree:5;
-    ULONG Unused:3;
-    ULONG NumberGenericTableElements:24;
+    ULONG_PTR DepthOfTree:5;
+    ULONG_PTR Unused:3;
+#ifdef _WIN64
+    ULONG_PTR NumberGenericTableElements:56;
+#else
+    ULONG_PTR NumberGenericTableElements:24;
+#endif
     PVOID NodeHint;
     PVOID NodeFreeHint;
 } MM_AVL_TABLE, *PMM_AVL_TABLE;
+
+//
+// Virtual Adress List used in VADs
+//
+typedef struct _MMADDRESS_LIST
+{
+    ULONG_PTR StartVpn;
+    ULONG_PTR EndVpn;
+} MMADDRESS_LIST, *PMMADDRESS_LIST;
+
+//
+// Flags used in the VAD
+//
+typedef struct _MMVAD_FLAGS
+{
+#ifdef _WIN64
+    ULONG_PTR CommitCharge:51;
+#else
+    ULONG_PTR CommitCharge:19;
+#endif
+    ULONG_PTR NoChange:1;
+    ULONG_PTR VadType:3;
+    ULONG_PTR MemCommit:1;
+    ULONG_PTR Protection:5;
+    ULONG_PTR Spare:2;
+    ULONG_PTR PrivateMemory:1;
+} MMVAD_FLAGS, *PMMVAD_FLAGS;
+
+//
+// Extended flags used in the VAD
+//
+typedef struct _MMVAD_FLAGS2
+{
+    ULONG FileOffset:24;
+    ULONG SecNoChange:1;
+    ULONG OneSecured:1;
+    ULONG MultipleSecured:1;
+    ULONG ReadOnly:1;
+    ULONG LongVad:1;
+    ULONG ExtendableFile:1;
+    ULONG Inherit:1;
+    ULONG CopyOnWrite:1;
+} MMVAD_FLAGS2, *PMMVAD_FLAGS2;
+
+//
+// Virtual Address Descriptor (VAD) Structure
+//
+typedef struct _MMVAD
+{
+    union
+    {
+        LONG_PTR Balance:2;
+        struct _MMVAD *Parent;
+    } u1;
+    struct _MMVAD *LeftChild;
+    struct _MMVAD *RightChild;
+    ULONG_PTR StartingVpn;
+    ULONG_PTR EndingVpn;
+    union
+    {
+        ULONG_PTR LongFlags;
+        MMVAD_FLAGS VadFlags;
+    } u;
+    PCONTROL_AREA ControlArea;
+    PMMPTE FirstPrototypePte;
+    PMMPTE LastContiguousPte;
+    union
+    {
+        ULONG LongFlags2;
+        MMVAD_FLAGS2 VadFlags2;
+    } u2;
+} MMVAD, *PMMVAD;
+
+//
+// Long VAD used in section and private allocations
+//
+typedef struct _MMVAD_LONG
+{
+    union
+    {
+        LONG_PTR Balance:2;
+        PMMVAD Parent;
+    } u1;
+    PMMVAD LeftChild;
+    PMMVAD RightChild;
+    ULONG_PTR StartingVpn;
+    ULONG_PTR EndingVpn;
+    union
+    {
+        ULONG_PTR LongFlags;
+        MMVAD_FLAGS VadFlags;
+    } u;
+    PCONTROL_AREA ControlArea;
+    PMMPTE FirstPrototypePte;
+    PMMPTE LastContiguousPte;
+    union
+    {
+        ULONG LongFlags2;
+        MMVAD_FLAGS2 VadFlags2;
+    } u2;
+    union
+    {
+        LIST_ENTRY List;
+        MMADDRESS_LIST Secured;
+    } u3;
+    union
+    {
+        PVOID Banked;
+        PMMEXTEND_INFO ExtendedInfo;
+    } u4;
+} MMVAD_LONG, *PMMVAD_LONG;
+
+//
+// Short VAD used in virtual memory allocations
+//
+typedef struct _MMVAD_SHORT
+{
+    union
+    {
+        LONG_PTR Balance:2;
+        PMMVAD Parent;
+    } u1;
+    PMMVAD LeftChild;
+    PMMVAD RightChild;
+    ULONG_PTR StartingVpn;
+    ULONG_PTR EndingVpn;
+    union
+    {
+        ULONG_PTR LongFlags;
+        MMVAD_FLAGS VadFlags;
+    } u;
+} MMVAD_SHORT, *PMMVAD_SHORT;
 
 //
 // Actual Section Object
@@ -660,7 +825,7 @@ typedef struct _MMWSLENTRY
     ULONG Hashed:1;
     ULONG Direct:1;
     ULONG Age:2;
-    ULONG VirtualPageNumber:14;
+    ULONG VirtualPageNumber:20;
 } MMWSLENTRY, *PMMWSLENTRY;
 
 typedef struct _MMWSLE
@@ -710,7 +875,7 @@ typedef struct _MMSUPPORT_FLAGS
     ULONG TrimHard:1;
     ULONG MaximumWorkingSetHard:1;
     ULONG ForceTrim:1;
-    ULONG MinimumworkingSetHard:1;
+    ULONG MinimumWorkingSetHard:1;
     ULONG Available0:1;
     ULONG MemoryPriority:8;
     ULONG GrowWsleHash:1;
@@ -774,7 +939,7 @@ typedef struct _MEMORY_BASIC_INFORMATION
     PVOID BaseAddress;
     PVOID AllocationBase;
     ULONG AllocationProtect;
-    ULONG RegionSize;
+    SIZE_T RegionSize;
     ULONG State;
     ULONG Protect;
     ULONG Type;
@@ -824,6 +989,10 @@ typedef struct _DRIVER_SPECIFIED_VERIFIER_THUNKS
     ULONG NumberOfThunks;
 } DRIVER_SPECIFIED_VERIFIER_THUNKS, *PDRIVER_SPECIFIED_VERIFIER_THUNKS;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 //
 // Default heap size values.  For user mode, these values are copied to a new
 // process's PEB by the kernel in MmCreatePeb.  In kernel mode, RtlCreateHeap
@@ -840,7 +1009,11 @@ extern SIZE_T MmHeapDeCommitFreeBlockThreshold;
 //
 // Section Object Type
 //
-extern POBJECT_TYPE MmSectionObjectType;
+extern POBJECT_TYPE NTSYSAPI MmSectionObjectType;
+
+#ifdef __cplusplus
+}; // extern "C"
+#endif
 
 #endif // !NTOS_MODE_USER
 

@@ -6,15 +6,16 @@ Native Development Kit README
 
 0.1 COPYRIGHT
 
-The NDK is Copyright ©2005-2008 Alex Ionescu.
+The NDK is Copyright © 2005-2012 Alex Ionescu.
+It is actively maintained by Alex Ionescu, and open contributions are welcome.
 
 0.2 CONTACT INFORMATION
 
-The author, Alex Ionescu, may be reached through the following means:
+The maintainer and author, Alex Ionescu, may be reached through the following means:
 
 Email: 	aionescu@gmail.com
-Mail:	1411 du Fort, #1207. H3H 2N7. Montreal, QC. CANADA.	
-Phone: 	1-(514)-581-7156
+Mail:	512 Van Ness #302. San Francisco, CA
+Phone: 	(424) 781-7156
 
 1. LICENSE
 
@@ -79,14 +80,13 @@ and sources. The following public sources of information were lawfully used:
 
 - GNU NTIFS.H, Revision 43
 - W32API, Version 2.5
-- Microsoft Windows Driver Kit 6001
-- Microsoft Windows Driver Kit 6000
+- Microsoft Windows Driver Kit
 - Microsoft Driver Development Kit 2003 SP1
 - Microsoft Driver Development Kit 2000
 - Microsoft Driver Development Kit NT 4
 - Microsoft Driver Development Kit WinME
 - Microsoft Installable File Systems Kit 2003 SP1
-- Microsoft Windows Debugger (WinDBG) 6.5.0003.7 and later
+- Microsoft Windows Debugger (WinDBG) 6.5.0003.7
 - Microsoft Public Symbolic Data
 - Microsoft Public Windows Binaries (strings)
 - OSR Technical Articles
@@ -107,6 +107,9 @@ Additionally, the following people contributed to the NDK:
 - Eric Kohl
 - Filip Navara
 - Steven Edwards
+- Matthieu Suiche
+- Stefan Ginsberg
+- Timo Kreuzer
 
 2.2 BECOMING A CONTRIBUTOR
 
@@ -114,7 +117,7 @@ To contribute information to the NDK, simply contact the author with your new st
 definition, enumeration, or prototype. Please make sure that your addition is:
 
 1) Actually correct!
-2) Present in Windows NT 5, 5.1, 5.2 and/or 6.0
+2) Present in Windows NT 5, 5.1, 5.2, 6.0, 6.1 and/or 6.2
 3) Not already accessible through another public header in the DDK, IFS, WDK and/or PSDK.
 4) From a publically verifiable source. The author needs to be able to search for your
    addition in a public information location (book, Internet, etc) and locate this definition.
@@ -125,8 +128,25 @@ definition, enumeration, or prototype. Please make sure that your addition is:
    for the purpose of locating the actual name or definition of a structure (sometimes possible due
    to ASSERTs or debugging strings) is considered 'fair use' and will be a likely candidate.
 
-If your addition satsfies these points, then please submit it, and also include whether or not
-you would like to be credited for it.
+If your contribution satsfies these points, then please submit it to the author with the following
+statement:
+
+"
+Copyright Grant.
+I grant to you a perpetual (for the duration of the applicable copyright), worldwide, non-exclusive,
+no-charge, royalty-free, copyright license, without any obligation for accounting to me, to reproduce,
+prepare derivative works of, publicly display, publicly perform, sublicense, distribute, and implement
+my Contribution to the full extent of my copyright interest in the Contribution.
+"
+
+If you wish to be credited for your contribution (which the author is more than happy to do!), you
+should add:
+
+"As a condition of the copyright grant, you must include an attribution in any derivative work you make
+based on the Contribution. That attribution must include, at minimum, my name."
+
+This will allow you to have your name in the readme.txt file (which you are now reading). If you wish to
+remain anonymous, simply do not include this statement.
 
 3. USAGE
 
@@ -158,7 +178,7 @@ you would like to be credited for it.
 
     * Native Mode Application: 
 
-       #include "ntdef.h"        /* Declare basic native types. */
+       #include "windows.h"      /* Declare Windows Headers for basic types. NEEDED UNTIL NDK 1.5 */
        #include "ntndk.h"        /* Declare the NDK Headers */
 
     * Kernel Mode Driver: 
@@ -179,4 +199,6 @@ you would like to be credited for it.
       Microsoft decided to hack the Native Types and to define them incorrectly, replacing real members by "reserved"
       ones. As such, you 'cannot include winternl.h in any project that uses the NDK. Note however, that the NDK fully
       replaces it and retains compatibility with any project that used it.
-    * You must have the WDK installed if using the WDK, even for non-kernel applications, because ntntls.h is required.
+    * Native programs: Native programs must include "windows.h" until the next release of the NDK (1.5). The upcoming
+      version will automatically detect the lack of missing types and include them. Note however that you will still
+      need to have the PSDK installed.
