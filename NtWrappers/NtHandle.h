@@ -1,4 +1,4 @@
-#include <ntndk.h>
+#include <obfuncs.h>
 
 class NtHandle
 {
