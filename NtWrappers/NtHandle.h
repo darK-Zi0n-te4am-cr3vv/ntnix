@@ -49,6 +49,11 @@ public:
         return *this;
     }
 
+    static NtHandle Null()
+    {
+        return NtHandle(NULL);
+    }
+
 private:
     NtHandle(const NtHandle &); // Disabling the copy ctor
 
