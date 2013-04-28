@@ -1144,6 +1144,14 @@ typedef struct _RTL_HANDLE_TABLE
     PRTL_HANDLE_TABLE_ENTRY MaxReservedHandles;
 } RTL_HANDLE_TABLE, *PRTL_HANDLE_TABLE;
 
+
+//
+// DIRTY HACK: Defining a EXCEPTION_REGISTRATION_RECORD structure makes NDK headers
+// incompotible with original winnt.h
+//
+
+/*
+
 //
 // Exception Record
 //
@@ -1152,6 +1160,8 @@ typedef struct _EXCEPTION_REGISTRATION_RECORD
     struct _EXCEPTION_REGISTRATION_RECORD *Next;
     PEXCEPTION_ROUTINE Handler;
 } EXCEPTION_REGISTRATION_RECORD, *PEXCEPTION_REGISTRATION_RECORD;
+
+*/
 
 //
 // Current Directory Structures
