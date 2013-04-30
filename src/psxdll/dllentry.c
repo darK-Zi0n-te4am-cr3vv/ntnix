@@ -5,7 +5,7 @@
 #include <windef.h>
 #include <winnt.h>
 
-BOOL DLLEntryPoint(HINSTANCE hDll, DWORD Reason, LPVOID Reserved)
+BOOL APIENTRY DLLEntryPoint(HINSTANCE hDll, DWORD Reason, LPVOID Reserved)
 {
     UNREFERENCED_PARAMETER(hDll);
     UNREFERENCED_PARAMETER(Reason);
