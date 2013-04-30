@@ -87,6 +87,7 @@
     <Compile Include="System\WindowsNT\Loader\PrivateImplementationDetails\Native.cs" />
     <Compile Include="System\WindowsNT\Loader\PrivateImplementationDetails\Wrapper.cs" />
     <Compile Include="System\WindowsNT\Loader\Types.cs" />
+    <Compile Include="System\WindowsNT\LPC\NtLpcPortBase.cs" />
     <Compile Include="System\WindowsNT\Memory\NtVirtualMemoryAddress.cs" />
     <Compile Include="Microsoft.WinNT.SafeHandles\SafeNtSectionHandle.cs" />
     <Compile Include="Microsoft.WinNT.SafeHandles\SafeLSAHandle.cs" />
