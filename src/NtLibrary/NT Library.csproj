@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{60533823-5EAB-4FBA-BAF9-06BC13D758B4}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <StartupObject>
+    </StartupObject>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>NtLibrary Key.snk</AssemblyOriginatorKeyFile>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>3.5</OldToolsVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Debug\NtLibrary.xml</DocumentationFile>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <NoWarn>0649, 1573, 1591</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>3</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\NtLibrary.xml</DocumentationFile>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CEscape.cs" />
+    <None Include="NtLibrary Key.snk" />
+    <Compile Include="Microsoft.WinNT.SafeHandles\SafeNtModuleHandle.cs" />
+    <Compile Include="Other Types.cs" />
+    <Compile Include="System\Runtime.InteropServices\StrongMarshal.cs" />
+    <Compile Include="System\Runtime.InteropServices\UnmanagedPointer.cs" />
+    <Compile Include="System\WindowsNT\Devices\IO\FileTables1\Attributes 1.cs" />
+    <Compile Include="System\WindowsNT\Devices\IO\FileTables2\Attributes 2.cs" />
+    <Compile Include="System\WindowsNT\Devices\IO\FileTables\Types.cs" />
+    <Compile Include="System\WindowsNT\Devices\IO\MappingPair.cs" />
+    <Compile Include="System\WindowsNT\Devices\IO\Types.cs" />
+    <Compile Include="System\WindowsNT\Devices\Video\Types.cs" />
+    <Compile Include="System\WindowsNT\Devices\Video\Video.cs" />
+    <Compile Include="System\WindowsNT\Devices\IO\FileSystem.cs" />
+    <Compile Include="System\WindowsNT\IO\AsyncResult.cs" />
+    <Compile Include="System\WindowsNT\IO\NtSynchronizedFile.cs" />
+    <Compile Include="System\WindowsNT\Loader\NtModule.cs" />
+    <Compile Include="System\WindowsNT\Loader\PrivateImplementationDetails\Native.cs" />
+    <Compile Include="System\WindowsNT\Loader\PrivateImplementationDetails\Wrapper.cs" />
+    <Compile Include="System\WindowsNT\Loader\Types.cs" />
+    <Compile Include="System\WindowsNT\Memory\NtVirtualMemoryAddress.cs" />
+    <Compile Include="Microsoft.WinNT.SafeHandles\SafeNtSectionHandle.cs" />
+    <Compile Include="Microsoft.WinNT.SafeHandles\SafeLSAHandle.cs" />
+    <Compile Include="Microsoft.WinNT.SafeHandles\SafeLSAPolicyHandle.cs" />
+    <Compile Include="Microsoft.WinNT.SafeHandles\SafeNtTokenHandle.cs" />
+    <Compile Include="Microsoft.WinNT.SafeHandles\SafeNtDirectoryHandle.cs" />
+    <Compile Include="Microsoft.WinNT.SafeHandles\SafeHandleZeroIsInvalid.cs" />
+    <Compile Include="Microsoft.WinNT.SafeHandles\SafeNtThreadHandle.cs" />
+    <Compile Include="Microsoft.WinNT.SafeHandles\SafeNtProcessHandle.cs" />
+    <Compile Include="Microsoft.WinNT.SafeHandles\SafeNtEventHandle.cs" />
+    <Compile Include="Microsoft.WinNT.SafeHandles\SafeNtFileHandle.cs" />
+    <Compile Include="Algorithms\Defragmentation.cs" />
+    <Compile Include="System\WindowsNT\Devices\PrivateImplementationDetails\Control Codes.cs" />
+    <Compile Include="System\WindowsNT\Devices\PrivateImplementationDetails\Native.cs" />
+    <Compile Include="System\WindowsNT\Devices\PrivateImplementationDetails\Wrapper.cs" />
+    <Compile Include="System\WindowsNT\Devices\Other Types.cs" />
+    <Compile Include="System\WindowsNT\Directories\NtDirectoryObject.cs" />
+    <Compile Include="System\WindowsNT\Directories\PrivateImplementationDetails\Native.cs" />
+    <Compile Include="System\WindowsNT\Directories\PrivateImplementationDetails\Wrapper.cs" />
+    <Compile Include="System\WindowsNT\Directories\Types.cs" />
+    <Compile Include="System\WindowsNT\Errors\Exceptions.cs" />
+    <Compile Include="System\WindowsNT\Errors\PrivateImplementationDetails\Native.cs" />
+    <Compile Include="System\WindowsNT\Errors\Types.cs" />
+    <Compile Include="System\WindowsNT\Events\NtEvent.cs" />
+    <Compile Include="System\WindowsNT\Events\PrivateImplementationDetails\Native.cs" />
+    <Compile Include="System\WindowsNT\Events\PrivateImplementationDetails\Wrapper.cs" />
+    <Compile Include="System\WindowsNT\Events\Types.cs" />
+    <Compile Include="System\WindowsNT\IO\NtDirectoryFile.cs" />
+    <Compile Include="System\WindowsNT\IO\NtNonDirectoryFile.cs" />
+    <Compile Include="System\WindowsNT\IO\NtFile.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System\WindowsNT\IO\Path.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System\WindowsNT\IO\PrivateImplementationDetails\Native.cs" />
+    <Compile Include="System\WindowsNT\IO\PrivateImplementationDetails\Wrapper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System\WindowsNT\IO\Types.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="System\WindowsNT\Memory\PrivateImplementationDetails\Native.cs" />
+    <Compile Include="System\WindowsNT\Memory\PrivateImplementationDetails\Wrapper.cs" />
+    <Compile Include="System\WindowsNT\Memory\Section.cs" />
+    <Compile Include="System\WindowsNT\Memory\Types.cs" />
+    <Compile Include="System\WindowsNT\NtObject.cs" />
+    <Compile Include="System\WindowsNT\PrivateImplementationDetails\Native - Filter.cs" />
+    <Compile Include="System\WindowsNT\Security\PrivateImplementationDetails\Native - LSA.cs" />
+    <Compile Include="System\WindowsNT\PrivateImplementationDetails\Wrapper.cs" />
+    <Compile Include="System\WindowsNT\PrivateImplementationDetails\DescriptionAttribute.cs" />
+    <Compile Include="System\WindowsNT\PrivateImplementationDetails\Extensions.cs" />
+    <Compile Include="System\WindowsNT\Errors\NtException.cs" />
+    <Compile Include="System\WindowsNT\PrivateImplementationDetails\Native.cs" />
+    <Compile Include="System\WindowsNT\Processes\PrivateImplementationDetails\Native.cs" />
+    <Compile Include="System\WindowsNT\Processes\PrivateImplementationDetails\Wrapper.cs" />
+    <Compile Include="System\WindowsNT\Processes\NtProcess.cs" />
+    <Compile Include="System\WindowsNT\Processes\Types.cs" />
+    <Compile Include="System\WindowsNT\Registry\Filter.cs" />
+    <Compile Include="System\WindowsNT\Registry\NameChangedEventArgs.cs" />
+    <Compile Include="Microsoft.WinNT.SafeHandles\SafeNtHandle.cs" />
+    <Compile Include="System\WindowsNT\Registry\PrivateImplementationDetails\Native.cs" />
+    <Compile Include="System\WindowsNT\Registry\PrivateImplementationDetails\Wrapper - Filter.cs" />
+    <Compile Include="System\WindowsNT\Registry\Registry Value Types.cs" />
+    <Compile Include="System\WindowsNT\Registry\Path.cs" />
+    <Compile Include="System\WindowsNT\Registry\Types.cs" />
+    <Compile Include="System\WindowsNT\Security\ISecurityInformation.cs" />
+    <Compile Include="System\WindowsNT\Security\PrivateImplementationDetails\Native.cs" />
+    <Compile Include="System\WindowsNT\Security\PrivateImplementationDetails\Wrapper - LSA.cs" />
+    <Compile Include="System\WindowsNT\Security\PrivateImplementationDetails\Wrapper.cs" />
+    <Compile Include="System\WindowsNT\Security\SecurityToken.cs" />
+    <Compile Include="System\WindowsNT\Security\Types - LSA.cs" />
+    <Compile Include="System\WindowsNT\Security\Types.cs" />
+    <Compile Include="System\WindowsNT\SharedTypes.cs" />
+    <Compile Include="System\WindowsNT\Registry\PrivateImplementationDetails\Wrapper.cs" />
+    <Compile Include="System\WindowsNT\Registry\NtRegistryKey.cs" />
+    <Compile Include="System\WindowsNT\PrivateImplementationDetails\NtStatus.cs" />
+    <Compile Include="Tester.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Microsoft.WinNT.SafeHandles\SafeNtRegistryHandle.cs" />
+    <Compile Include="System\WindowsNT\Threading\PrivateImplementationDetails\Native.cs" />
+    <Compile Include="System\WindowsNT\Threading\PrivateImplementationDetails\Wrapper.cs" />
+    <Compile Include="System\WindowsNT\Threading\NtThread.cs" />
+    <Compile Include="System\WindowsNT\Threading\Types.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Application.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
