@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CEscape.cs" />
+    <Compile Include="Microsoft.WinNT.SafeHandles\SafeNtLpcHandle.cs" />
     <Compile Include="Microsoft.WinNT.SafeHandles\SafeNtModuleHandle.cs" />
     <Compile Include="Other Types.cs" />
     <Compile Include="System\Runtime.InteropServices\StrongMarshal.cs" />
