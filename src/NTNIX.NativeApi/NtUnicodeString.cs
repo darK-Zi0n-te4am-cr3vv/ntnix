@@ -4,7 +4,7 @@ using System.Runtime.InteropServices;
 namespace NTNIX.NativeApi
 {
     [StructLayout(LayoutKind.Sequential)]
-    struct NtUnicodeString : IDisposable
+    public struct NtUnicodeString : IDisposable
     {
         [MarshalAs(UnmanagedType.U2)]
         private ushort Length;
