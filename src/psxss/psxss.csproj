@@ -22,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -48,12 +49,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="ksh" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NtLibrary\NT Library.csproj">
-      <Project>{60533823-5eab-4fba-baf9-06bc13d758b4}</Project>
-      <Name>NT Library</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

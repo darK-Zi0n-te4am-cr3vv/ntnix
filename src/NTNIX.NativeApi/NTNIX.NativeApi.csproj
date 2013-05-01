@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="NtObjectAttributes.cs" />
+    <Compile Include="NtStatus.cs" />
     <Compile Include="NtUnicodeString.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
