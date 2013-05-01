@@ -6,11 +6,8 @@ namespace NTNIX.NativeApi
     [StructLayout(LayoutKind.Sequential)]
     public struct NtUnicodeString : IDisposable
     {
-        [MarshalAs(UnmanagedType.U2)]
         private ushort Length;
-        [MarshalAs(UnmanagedType.U2)]
         private ushort MaximumLength;
-        [MarshalAs(UnmanagedType.LPWStr)]
         private IntPtr Buffer;
 
         public NtUnicodeString(string str)
