@@ -14,4 +14,9 @@
     }                                                                         \
 } while (0);
 
+#define DECLARE_STRUCT(Name)                                                  \
+    struct _##Name;                                                           \
+    typedef struct _##Name Name, P##Name;                                     \
+    struct _##Name
+
 #endif /* _PSXSS_H_ */
