@@ -3191,6 +3191,8 @@ RtlDeleteTimerQueue(HANDLE TimerQueue);
 //
 // SList functions
 //
+
+/*
 PSLIST_ENTRY
 FASTCALL
 InterlockedPushListSList(
@@ -3199,6 +3201,7 @@ InterlockedPushListSList(
     _Inout_ PSLIST_ENTRY ListEnd,
     _In_ ULONG Count
 );
+*/
 
 //
 // Range List functions
